@@ -8,12 +8,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import com.tinashe.Business.DatabaseBusiness;
+import com.tinashe.Business.ServerInterface;
 import com.tinashe.Hotel_Booking.Bookpage;
 
 public class MainEvent implements ActionListener{
 	private JTextField usernamevalue; 
 	private JPasswordField  passwordvalue;
-	private DatabaseBusiness setData = new DatabaseBusiness(); 
+	private ServerInterface setData = new DatabaseBusiness(); 
 	
 	public MainEvent (JTextField username , JPasswordField password)
 	{

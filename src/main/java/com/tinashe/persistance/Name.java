@@ -104,6 +104,13 @@ public class Name {
 	public String getFirst_name() {
 		return First_name;
 	}
+	@Override
+	public String toString() {
+		return "Name [id=" + id + ", First_name=" + First_name + ", Last_name=" + Last_name + ", phonenumber="
+				+ phonenumber + ", email=" + email + ", checkin=" + checkin + ", checkout=" + checkout + ", amountpaid="
+				+ amountpaid + ", room_type=" + room_type + ", room_number=" + room_number + "]";
+	}
+
 	public void setFirst_name(String first_name) {
 		First_name = first_name;
 	}

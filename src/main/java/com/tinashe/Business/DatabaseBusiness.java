@@ -11,24 +11,19 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.sql.rowset.BaseRowSet; 
 
-public class DatabaseBusiness {
+public class DatabaseBusiness implements ServerInterface{
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; 
 	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/users"; 
 	static final String DB_USER = "root"; 
 	static final String DB_PASS=  "gangster01";
-	
 	Connection conn = null;
     Statement stmt = null;
-	
 	public DatabaseBusiness() 
 	{
 		try {
 			Class.forName(JDBC_DRIVER);
 			this.conn = DriverManager.getConnection(DB_URL,DB_USER , DB_PASS);
-			this.stmt = conn.createStatement();
-			
-			
-			
+			this.stmt = conn.createStatement();		
 		}
 		catch (ClassNotFoundException e) {
 			
@@ -40,11 +35,30 @@ public class DatabaseBusiness {
 		}
 	}
 	
-	public Statement getStmt() {
-		return stmt;
+	
+	
+	public Name setNamedata(ResultSet results)
+	{
+		Name name = new Name (); 
+		try {
+			name.setId(results.getLong("id"));
+			name.setFirst_name(results.getString("first_name"));
+			name.setLast_name(results.getString("Last_name"));
+			name.setPhonenumber(results.getInt("phonenumber"));
+			name.setEmail(results.getString("email"));
+			name.setCheckin(results.getDate("checkin"));
+			name.setCheckout(results.getDate("checkout"));
+			name.setAmountpaid(results.getInt("amountpaid"));
+			name.setRoom_type(results.getString("room_type"));
+			name.setRoom_number(results.getString("room_number"));
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return name; 
 	}
 
-	
 	public Boolean Login (String username, String password )
 	{
 		Boolean Login = false ; 
@@ -65,11 +79,23 @@ public class DatabaseBusiness {
 			
 			e.printStackTrace();
 		}
-		
-		
+		finally {
+			   
+		    if (stmt != null) {
+		        try {
+		            stmt.close();
+		        } catch (SQLException e) { /* ignored */}
+		    }
+		    if (conn != null) {
+		        try {
+		            conn.close();
+		        } catch (SQLException e) { /* ignored */}
+		    }
+		}
 		return Login; 
 		
 	}
+	
 	public ArrayList<Room> getroom (String room)
 	{
 		String sql = "SELECT * FROM rooms WHERE room_type='"+room+ "'";
@@ -88,11 +114,9 @@ public class DatabaseBusiness {
 			
 			e.printStackTrace();
 		}
-		
-		
 		return returndata; 
 	}
-	public ArrayList<String>  getroomtypes()
+	public ArrayList<String> getroomtypes()
 	{
 		ArrayList <String> returndata = new ArrayList <String>();
 		String sql = "SELECT * FROM room_details";
@@ -102,17 +126,29 @@ public class DatabaseBusiness {
 			while (result.next())
 			{
 				returndata.add( result.getString("room_type")); 
-				
-				 	
 			}
 			
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
 		}
+		finally {
+			   
+		    if (stmt != null) {
+		        try {
+		            stmt.close();
+		        } catch (SQLException e) { /* ignored */}
+		    }
+		    if (conn != null) {
+		        try {
+		            conn.close();
+		        } catch (SQLException e) { /* ignored */}
+		    }
+		}
 		return returndata ; 
 	}
-	private Room setalldata (ResultSet result ) throws SQLException
+	
+	protected Room setalldata (ResultSet result ) throws SQLException
 	{
 		 Room check = new Room(); 
 		 check.setRoom_id(result.getInt("room_id"));
@@ -139,13 +175,24 @@ public class DatabaseBusiness {
 			 ps.setString(9, name.getRoom_number());
 			 ps.executeUpdate(); 
 			 
-			 return name; 
-			 
-			 
+			 return name;	 
 		
 		}catch (Exception e) {
 			
 			e.printStackTrace();
+		}
+		finally {
+			   
+		    if (stmt != null) {
+		        try {
+		            stmt.close();
+		        } catch (SQLException e) { /* ignored */}
+		    }
+		    if (conn != null) {
+		        try {
+		            conn.close();
+		        } catch (SQLException e) { /* ignored */}
+		    }
 		}
 		
 		return null;
