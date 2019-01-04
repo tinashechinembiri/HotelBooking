@@ -2,7 +2,7 @@ package com.tinashe.Event;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
+
 import java.util.Date;
 
 import javax.swing.JComboBox;
@@ -13,8 +13,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 
 import com.tinashe.util.Convertorfunctions;
 import com.tinashe.Business.DatabaseBusiness;
-import com.tinashe.persistance.Room;
-import com.tinashe.util.Constant;
+import com.tinashe.Business.ServerInterface;
 
 
 public class Comboboxevent implements ItemListener{
@@ -22,11 +21,12 @@ public class Comboboxevent implements ItemListener{
 	private JDatePickerImpl checkin ;
 	private JDatePickerImpl checkout ;
 	private JTextField price; 
-	private JComboBox<Room> roominfo;
+	private JComboBox<Integer> roominfo;
 	Convertorfunctions convertitems = new Convertorfunctions(); 
-	DatabaseBusiness setData = new DatabaseBusiness();
+	ServerInterface setData = new DatabaseBusiness();
+	
 
-	public Comboboxevent  (JComboBox<String> items, JDatePickerImpl checkin, JDatePickerImpl checkout,JTextField price,JComboBox<Room> roominfo)
+	public Comboboxevent  (JComboBox<String> items, JDatePickerImpl checkin, JDatePickerImpl checkout,JTextField price,JComboBox<Integer> roominfo)
 	{
 		this.item = items; 
 		this.checkin = checkin;
@@ -48,12 +48,14 @@ public class Comboboxevent implements ItemListener{
 		   if(e.getStateChange() == ItemEvent.SELECTED) {
                String a= this.item.getSelectedItem().toString();
                long datetodays =  convertitems.turndatestoday(checkindate, checkoutdate); 
-             
+               	DayEventlistenter mn = new DayEventlistenter(roominfo); 
+           		roominfo.addItemListener(mn);
                if (a.equals("King"))
                {
             	   
             	   price.setText(String.valueOf(Totalprice(datetodays,100)));
             	   itemsroom ( a );
+            	  
                }
                if (a.equals("Queen"))
                {
@@ -80,10 +82,11 @@ public class Comboboxevent implements ItemListener{
             	   price.setText(String.valueOf(Totalprice(datetodays,67)));
             	   itemsroom ( a );
                }
+               
                }
 
 }
-public int Totalprice(long days,  int actualprice)
+private int Totalprice(long days,  int actualprice)
 {
 	int finalprice = 0;
 	System.out.println(days);
@@ -91,24 +94,24 @@ public int Totalprice(long days,  int actualprice)
 	{
 	return actualprice; 
 	}
-	else
-		
+	else	
 	finalprice = actualprice * (int)days; 
 	return finalprice; 
-	
-	
 }
+
 private void itemsroom (String a )
 {
 	if (this.roominfo.getItemCount() != 0 )
 	{
 		this.roominfo.removeAllItems();
-		setData.getroom(a).stream().forEach(user -> {this.roominfo.addItem(user);});
+		 setData.getroom(a).stream().forEach(user -> {this.roominfo.addItem(user.getRoom_number());});	
 	}
 	else 
 	{
-		setData.getroom(a).stream().forEach(user -> {this.roominfo.addItem(user);});
-	}		
+		setData.getroom(a).stream().forEach(user -> {this.roominfo.addItem(user.getRoom_number());}); 
+	}	
+	
+	
 }
 
 }

@@ -3,11 +3,10 @@ package com.tinashe.Hotel_Booking;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Properties;
 import org.jdatepicker.impl.*;
-import org.jdatepicker.util.*;
-import org.jdatepicker.*;
+
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,22 +17,22 @@ import javax.swing.JTextField;
 
 import com.tinashe.Business.DatabaseBusiness;
 import com.tinashe.Business.DateLabelFormatter;
+import com.tinashe.Business.ServerInterface;
 import com.tinashe.Event.BookingEvent;
 import com.tinashe.Event.Comboboxevent;
-import com.tinashe.persistance.Room;
+
 
 public class Bookpage {
-	private JFrame mainframe ; 
-	private JPanel Panel;
-	private JPanel datepickers;
-	private JPanel headerpanel; 
+	 private JFrame mainframe ; 
+	 private JPanel Panel;
+	 private JPanel datepickers;
+	 private JPanel headerpanel; 
 	 private JLabel headerLabel;
 	 private JPanel Paneltwo;
 	 private JButton roomsBooked; 
 	 private JButton guestdetails; 
-	 private String datePattern = "yyyy-MM-dd";
-	    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
-	DatabaseBusiness setData = new DatabaseBusiness(); 
+	 ServerInterface setData = new DatabaseBusiness(); 
+	
 	 public Bookpage ()
 	 {
 		startGui (); 
@@ -80,12 +79,12 @@ public class Bookpage {
 		  JLabel phone = new JLabel("phonenumber");
 		  JTextField phonenumber = new JTextField (6);
 		  JButton booking = new JButton ("Booking"); 
-		  this.roomsBooked = new JButton ("Booked room deatails"); 
-		  this.guestdetails = new JButton ("guest details"); 
+		  this.roomsBooked = new JButton ("GuestLedge"); 
+		  this.guestdetails = new JButton ("guestdetails"); 
 		  JTextField price = new JTextField (6);
 		 
-		  JComboBox<Room> roominfo = new JComboBox<Room> (); 
-		  //setData.getroom().stream().forEach(user -> {data.addItem(user);});
+		  JComboBox<Integer> roominfo = new JComboBox<Integer> (); 
+		  
 		 JComboBox<String> data = new JComboBox<String> ();
 		 setData.getroomtypes().stream().forEach(user -> {data.addItem(user);});
 		  this.headerpanel.add(roomsBooked); 
@@ -108,18 +107,18 @@ public class Bookpage {
 		  this.datepickers.add(new JLabel("Full price"));
 		  this.datepickers.add(price);
 		
-		 
 		  
 		  this.Paneltwo.add(data);
 		  this.Paneltwo.add(roominfo);
 		  this.mainframe.setVisible(true);
 		  BookingEvent book = new BookingEvent (Firstname, Secondname,Email, phonenumber, datePicker, checkoutpicker,price, data, roominfo); 
 		  booking.addActionListener(book);
-		  
+		  this.roomsBooked.addActionListener(new BookingEvent());
+		  this.guestdetails.addActionListener(new BookingEvent());
 		  Comboboxevent mn = new Comboboxevent(data, datePicker, checkoutpicker, price,roominfo); 
 		  data.addItemListener(mn);
 		  
-		    }
+	}
 	
 
 }
