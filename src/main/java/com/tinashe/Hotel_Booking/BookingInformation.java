@@ -55,35 +55,46 @@ public class BookingInformation {
 			 {
 				 	 setavaiable.add(a); 
 					 table = new JTable(new Mymodel(Constant.columns,setavaiable));
+					 this.table.setPreferredScrollableViewportSize(new Dimension(1200,80)); 
+			 }
+			 else
+			 {
+				 table = new JTable(new Mymodel(Constant.columns,setavaiable));
+				 this.table.setPreferredScrollableViewportSize(new Dimension(1200,80)); 
 			 }
 		 }
+		 	this.Panel.add(new JLabel("rooms that are occupied",JLabel.CENTER));
+		 	this.Panel.add(new JScrollPane(this.table)); 
+		 	
+			this.Panelavailable.add(new JLabel("Unoccupied rooms",JLabel.CENTER));
+		 	JTable roomtable = new JTable(new RoomModel(roomsavailable(setavaiable)));
+		 	roomtable.setPreferredScrollableViewportSize(new Dimension(1200,80));
+		 	this.Panelavailable.add(new JScrollPane(roomtable)); 
+		 	this.mainframe.setVisible(true);
 		 }
 		 catch (NullPointerException e )
 		 {
 			 System.out.println(e); 
 		 }
-		 System.out.println(roomsavailable(setavaiable));
-		 JTable roomtable = new JTable(new RoomModel(roomsavailable(setavaiable)));
-		 roomtable.setPreferredScrollableViewportSize(new Dimension(1200,80)); 
-		 
-		 this.table.setPreferredScrollableViewportSize(new Dimension(1200,80)); 
-		 
-		 this.Panel.add(new JLabel("rooms that are occupied",JLabel.CENTER));
-		 this.Panel.add(new JScrollPane(this.table)); 
-		 this.Panelavailable.add(new JScrollPane(roomtable)); 
-		 this.mainframe.setVisible(true);
 	 }
 	private List<Room> roomsavailable( List<Name>  setavaiable) 
 	{
 		 List<Room>  availablerooms = new ArrayList<Room>(); 
 		for (Room r : data.getroom())
 		{
-			for(Name n : setavaiable)
+			if ( setavaiable.size() != 0)
 			{
-			if (r.getRoom_number() != Integer.parseInt(n.getRoom_number()))
-			{
-				availablerooms.add(r); 	
+				for(Name n : setavaiable)
+				{
+					if (r.getRoom_number() != Integer.parseInt(n.getRoom_number()))
+					{
+						availablerooms.add(r); 	
+					}
+				}
 			}
+			else 
+			{
+				availablerooms.add(r); 
 			}
 		}
 		

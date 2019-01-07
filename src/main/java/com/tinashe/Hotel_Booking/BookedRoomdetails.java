@@ -22,6 +22,7 @@ import javax.swing.ListModel;
 import com.tinashe.Business.BookingDetails;
 import com.tinashe.Business.ServerInterface;
 import com.tinashe.Event.BookingMouse;
+import com.tinashe.Event.Searchbarevent;
 import com.tinashe.persistance.Room;
 import com.tinashe.util.ListTableModel;
 
@@ -65,10 +66,13 @@ public class BookedRoomdetails {
 		   JTable table = new JTable(new ListTableModel(columns,item.getdata())); 
 		   table.setPreferredScrollableViewportSize(new Dimension(480, 70)); 
 			this.Panel.add(new JScrollPane(table));
-			this.mainframe.setVisible(true);
+			
 			BookingMouse clickdata = new BookingMouse(table); 
 			table.addMouseListener(clickdata);
-			
+			JTextField searchbar = new JTextField(6); 
+			searchbar.getDocument().addDocumentListener(new Searchbarevent(table, searchbar));
+			this.Panel.add(searchbar);
+			this.mainframe.setVisible(true);
 			//item.getdata().stream().forEach(user ->{ userinfo(user); System.out.println(user);});
 	}
 
