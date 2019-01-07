@@ -100,6 +100,7 @@ public class Bookpage {
 		  this.Paneltwo.add(phone);
 		  this.Paneltwo.add(phonenumber); 
 		  this.Paneltwo.add(booking);
+		  
 		  this.datepickers.add(new JLabel("check in"));
 		  this.datepickers.add(datePicker);
 		  this.datepickers.add(new JLabel("check out"));
@@ -120,5 +121,4 @@ public class Bookpage {
 		  
 	}
 	
-
 }

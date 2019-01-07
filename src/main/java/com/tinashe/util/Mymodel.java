@@ -35,7 +35,7 @@ public class Mymodel extends AbstractTableModel {
 	 public Object getValueAt(int row, int column) {
 	        Object value = null;
 	        Name client = rows.get(row);
-
+	        	
 	        switch (column) {
 	            case 0:
 	                value = Long.toString(client.getId());
@@ -67,6 +67,7 @@ public class Mymodel extends AbstractTableModel {
 	            	value = client.getRoom_number(); 
 	         
 	        }
+	        
 	        return value;
 	        
 	    }
